@@ -1,0 +1,4 @@
+var searchIndex = JSON.parse('{\
+"perceptron3000":{"doc":"","t":[17,17,3,11,11,12,11,11,5,11,11,11,11],"n":["MAGIC","NUMBER","Ppm","borrow","borrow_mut","contents","from","into","main","new","try_from","try_into","type_id"],"q":["perceptron3000","","","","","","","","","","","",""],"d":["First part of the “magic number” for the PPM file …","Second part of the “magic number” for the PPM file …","The file format our simple neural network will work with.","","","","Returns the argument unchanged.","Calls <code>U::from(self)</code>.","","Initializes a new Ppm with the provided height, width, and …","","",""],"i":[0,0,0,1,1,1,1,1,0,1,1,1,1],"f":[null,null,null,[[["",0]],["",0]],[[["",0]],["",0]],null,[[]],[[]],[[]],[[["u8",0],["u8",0],["u8",0]]],[[],["result",4]],[[],["result",4]],[[["",0]],["typeid",3]]],"p":[[3,"Ppm"]]}\
+}');
+if (window.initSearch) {window.initSearch(searchIndex)};

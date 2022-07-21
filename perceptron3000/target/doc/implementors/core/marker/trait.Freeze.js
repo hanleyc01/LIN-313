@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["perceptron3000"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.62.1/core/marker/trait.Freeze.html\" title=\"trait core::marker::Freeze\">Freeze</a> for <a class=\"struct\" href=\"perceptron3000/struct.Ppm.html\" title=\"struct perceptron3000::Ppm\">Ppm</a>","synthetic":true,"types":["perceptron3000::Ppm"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
