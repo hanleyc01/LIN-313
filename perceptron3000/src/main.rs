@@ -2,6 +2,36 @@
 use std::fs::File;
 use std::io::Write;
 
+/// The distinct unit within our neural network; has three important elements:
+/// 
+/// 1. The weights of for our distinct inputs (ws), 
+/// 2. bias (or w_0) which is the global weight,
+/// 3. Our net input function (sum of `x_1*w_1+x_2*w_2+...+x_n*w_n`),
+/// 4. Activation function, which outputs 1 or 0 depending on the definition.
+///
+/// [From here](https://www.simplilearn.com/tutorials/deep-learning-tutorial/perceptron):
+/// ```
+/// Weights:
+/// w = [w0, w1, ... , wm],
+///     where w0 = bias
+/// 
+/// Inputs:
+/// x = [x0, x1, ... , xm],
+///     where x0 = 1
+/// 
+/// The decision function:
+/// z = w0x0 + w1x1 + ... + wmxm
+/// 
+/// Activation function:
+/// φ(z)
+///   z >= 0    = 1
+///   otherwise = 0
+/// ```
+struct Node {
+    weights: Vec<u8>,
+    bias: u8,
+}
+
 /// The file format our simple neural network will work with.
 ///
 /// Taken from [here](http://netpbm.sourceforge.net/doc/ppm.html).
@@ -34,9 +64,13 @@ use std::io::Write;
 /// 15  0 15    0  0  0    0  0  0    0  0  0
 /// ```
 struct Ppm {
+    /// Height of the raster 
     height: u8,
+    /// Width of the raster
     width: u8,
+    /// Maximum value contained in each cell
     maxval: u8,
+    /// Vector containing the contents of the PPM as bytes
     contents: Vec<u8>,
 }
 
@@ -68,8 +102,16 @@ impl Ppm {
     }
 
     /// Pushes a new "byte" into our PPM vector.
-    ///
-    /// Importantly, the byte value <= maxval.
+    /// Importantly, we need to note that the numerical values to be 
+    /// pushed are *in ASCII*!
+    /// 
+    /// Also note that the RGB values to be pushed *must* be > maxval.
+    /// ```
+    /// let wrong_ppm = Ppm::new(3,1,1);
+    /// // wrong input, as this produces a width of ETX, height of SOH, and maxval of SOH
+    /// let ppm = Ppm::new(51, 49, 49);
+    /// // correct; produces width of 3, height of 1, and maxval of 1
+    /// ```
     fn push(&mut self, byte: u8) {
         self.contents.push(b' ');
         self.contents.push(byte);
@@ -94,6 +136,6 @@ fn main() {
     
     println!("{:?}", &ppm.contents);
 
-    let mut f = std::fs::File::create("./foo.ppm").expect("unable to create file");
+    let mut f = File::create("./foo.ppm").expect("unable to create file");
     f.write_all(&ppm.contents).expect("unable to write data");
 }
