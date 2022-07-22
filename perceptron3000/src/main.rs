@@ -77,21 +77,23 @@ impl Ppm {
 }
 
 fn main() {
-    let mut ppm = Ppm::new(3, 2, 225);
+    let mut ppm = Ppm::new(51, 49, 49);
     println!("{:?}", ppm.contents);
     
-    ppm.push(1);
-    ppm.push(0);
-    ppm.push(0);
+    ppm.push(49);
+    ppm.push(48);
+    ppm.push(48);
 
-    ppm.push(0);
-    ppm.push(1);
-    ppm.push(0);
+    ppm.push(48);
+    ppm.push(49);
+    ppm.push(48);
     
-    ppm.push(0);
-    ppm.push(0);
-    ppm.push(1);
+    ppm.push(48);
+    ppm.push(48);
+    ppm.push(49);
     
+    println!("{:?}", &ppm.contents);
+
     let mut f = std::fs::File::create("./foo.ppm").expect("unable to create file");
-    f.write_all(&ppm.contents.as_bytes()).expect("unable to write data");
+    f.write_all(&ppm.contents).expect("unable to write data");
 }
