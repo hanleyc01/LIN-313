@@ -39,6 +39,7 @@ fn main() -> std::io::Result<()> {
         .create(true)
         .open("./results2.txt")?;
 
+    // Initializes the nodes
     let mut a = Node::new(BASE_RANK, 1.0); // a -> b
     let mut b = Node::new(BASE_RANK, 2.0); // b -> a;
                                            // b -> d
@@ -46,6 +47,8 @@ fn main() -> std::io::Result<()> {
                                            // c -> b
     let mut d = Node::new(BASE_RANK, 2.0); // d -> a;
                                            // d -> c
+    
+    // Second question nodes
     let mut e = Node::new(BASE_RANK, 2.0); // e -> c;
                                            // e -> g
     let mut f = Node::new(BASE_RANK, 2.0); // f -> e;
@@ -54,6 +57,7 @@ fn main() -> std::io::Result<()> {
 
     let mut results: Vec<String> = Vec::new();
     for _i in 0..1000 {
+        // Calculate vote per round
         let a_vote = a.vote();
         let b_vote = b.vote();
         let c_vote = c.vote();
@@ -62,24 +66,31 @@ fn main() -> std::io::Result<()> {
         let f_vote = f.vote();
         let g_vote = g.vote();
 
+        // b -> a; c -> a; d -> a
         a.voted(b_vote);
         a.voted(c_vote);
         a.voted(d_vote);
 
+        // a -> b; c -> b
         b.voted(a_vote);
         b.voted(c_vote);
 
+        // d -> c; e -> c
         c.voted(d_vote);
         c.voted(e_vote);
 
+        // b -> d
         d.voted(b_vote);
 
+        // f -> e; g -> e
         e.voted(f_vote);
         e.voted(g_vote);
 
+        // e -> g; f -> g
         g.voted(e_vote);
         g.voted(f_vote);
     
+        // Push to result vector
         results.push(a.rank.to_string());
         results.push(b.rank.to_string());
         results.push(c.rank.to_string());
@@ -90,6 +101,7 @@ fn main() -> std::io::Result<()> {
         results.push("\n".to_string());
     }
     
+    // Silly writing to file
     let mut results_u8: Vec<&[u8]> = Vec::new();
     results.iter().for_each(|x| results_u8.push(x.as_bytes()));
     for j in 0..results_u8.len() {
