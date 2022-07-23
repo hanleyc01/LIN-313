@@ -1,10 +1,11 @@
 #![allow(dead_code)]
+#![allow(unused_macros)]
 use std::fs::File;
 use std::io::Write;
 
 /// The distinct unit within our neural network; has three important elements:
-/// 
-/// 1. The weights of for our distinct inputs (ws), 
+///
+/// 1. The weights of for our distinct inputs (ws),
 /// 2. bias (or w_0) which is the global weight,
 /// 3. Our net input function (sum of `x_1*w_1+x_2*w_2+...+x_n*w_n`),
 /// 4. Activation function, which outputs 1 or 0 depending on the definition.
@@ -14,14 +15,14 @@ use std::io::Write;
 /// Weights:
 /// w = [w0, w1, ... , wm],
 ///     where w0 = bias
-/// 
+///
 /// Inputs:
 /// x = [x0, x1, ... , xm],
 ///     where x0 = 1
-/// 
+///
 /// The decision function:
 /// z = w0x0 + w1x1 + ... + wmxm
-/// 
+///
 /// Activation function:
 /// φ(z)
 ///   z >= 0    = 1
@@ -64,7 +65,7 @@ struct Node {
 /// 15  0 15    0  0  0    0  0  0    0  0  0
 /// ```
 struct Ppm {
-    /// Height of the raster 
+    /// Height of the raster
     height: u8,
     /// Width of the raster
     width: u8,
@@ -102,9 +103,9 @@ impl Ppm {
     }
 
     /// Pushes a new "byte" into our PPM vector.
-    /// Importantly, we need to note that the numerical values to be 
+    /// Importantly, we need to note that the numerical values to be
     /// pushed are *in ASCII*!
-    /// 
+    ///
     /// Also note that the RGB values to be pushed *must* be > maxval.
     /// ```
     /// let wrong_ppm = Ppm::new(3,1,1);
@@ -113,29 +114,36 @@ impl Ppm {
     /// // correct; produces width of 3, height of 1, and maxval of 1
     /// ```
     fn push(&mut self, byte: u8) {
-        self.contents.push(b' ');
         self.contents.push(byte);
+    }
+
+    /// Push a pixel onto the vector; takes u8 and converts it into the ASCII encoding
+    /// for the number.
+    fn push_all(&mut self, r: u8, g: u8, b: u8) {
+        let xs: Vec<Vec<u8>> = vec![
+            to_ascii(r),
+            vec![b' '],
+            to_ascii(g),
+            vec![b' '],
+            to_ascii(b),
+            vec![b'\n']
+        ];
+        xs.into_iter().flatten().for_each(|x| self.push(x));
+    }
+}
+
+/// Simple conversion to of numbers ASCII
+fn to_ascii(n: u8) -> Vec<u8> {
+    if n > 10 {
+        vec![n + 48]
+    } else {
+        let z = n.to_string().chars().map(|x| x as u8).collect::<Vec<u8>>();
+        z
     }
 }
 
 fn main() {
-    let mut ppm = Ppm::new(51, 49, 49);
-    println!("{:?}", ppm.contents);
-    
-    ppm.push(49);
-    ppm.push(48);
-    ppm.push(48);
-
-    ppm.push(48);
-    ppm.push(49);
-    ppm.push(48);
-    
-    ppm.push(48);
-    ppm.push(48);
-    ppm.push(49);
-    
-    println!("{:?}", &ppm.contents);
-
-    let mut f = File::create("./foo.ppm").expect("unable to create file");
-    f.write_all(&ppm.contents).expect("unable to write data");
+    let numsL 
+    // let mut f = File::create("./foo.ppm").expect("unable to create file");
+    // f.write_all(&ppm.contents).expect("unable to write data");
 }
