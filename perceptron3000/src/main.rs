@@ -30,14 +30,18 @@ use rand::prelude::*;
 ///   otherwise = 0
 /// ```
 struct Node {
-    weights: Vec<u8>,
+    weights: Vec<f32>,
     bias: f32,
 }
 
 impl Node {
     
-    fn new(width: u32, height: u32, bias: f32) -> Self {
-        
+    /// Initializes a new Node structure containing the vector of weights, and the bias;
+    /// for effective use gurantee that the size of the weights is equivalent to the data set
+    /// you're working with. Similarly, make sure to modify weights in such a way as to fit your
+    /// decision function.
+    fn new(weights: Vec<f32>, bias: f32) -> Self {
+        Self { weights, bias }
     }
 
 }
@@ -165,16 +169,21 @@ const WIDTH: u32 = 1000;
 const HEIGHT: u32 = 1000;
 const MAXVAL: u32 = 255;
 
-fn main() {
-    let mut ppm = Ppm::new(WIDTH, HEIGHT, MAXVAL);
+/// Generates a circle with a given Ppm, a radius, and `a` and `b`, which are the modifiers to the
+/// origin. Currently, this takes the dead-center of the .ppm as being the origin, so adjust
+/// calculations accordingly.
+fn gen_circle(ppm: &mut Ppm, radius: f32, a: f32, b: f32) {
 
-    let radius = 100;
     let cent_x = WIDTH / 2;
     let cent_y = HEIGHT / 2;
+    
+    let a_1 = (cent_x as f32) + a;
+    let b_1 = (cent_y as f32) + b;
+
 
     for i in 0..WIDTH {
         for j in 0..HEIGHT {
-            let circ_eq = (i as f32 - cent_x as f32).powf(2.) + (j as f32 - cent_y as f32).powf(2.);
+            let circ_eq = (i as f32 - a_1).powf(2.) + (j as f32 - b_1).powf(2.);
             let circ_eq_max = (radius as f32).powf(2.0) + 30.;
             let circ_eq_min = (radius as f32).powf(2.0) - 30.;
             if circ_eq_min >= circ_eq && circ_eq <= circ_eq_max  {
@@ -190,8 +199,59 @@ fn main() {
             }
         }
     }
+}
+
+/// Generates a random circle.
+fn gen_rand_circle(ppm: &mut Ppm) {
+    let mut rng = rand::thread_rng();
+    let rand_radius: f32 = rng.gen_range(10.0 .. WIDTH as f32 / 2.0);
+    let rand_a: f32 = rng.gen_range(-(WIDTH as f32 / 3.0) .. WIDTH as f32 / 3.0);
+    let rand_b: f32 = rng.gen_range(-(WIDTH as f32 / 3.0) .. WIDTH as f32 / 3.0);
+    gen_circle(ppm, rand_radius, rand_a, rand_b);
+}
+
+/// Parses .ppm content vector back into regular numbers (ASCII decimal to decimal standard), and
+/// and then converts the numbers into a ratio out of MAXVAL.
+///
+/// Example:
+/// ```
+/// let width = 1;
+/// let height = 1;
+/// let maxval = 255;
+///
+/// let mut ppm = Ppm::new(width, height, maxval);
+/// ppm.push_all(255, 140, 10);
+///
+/// println!("{:?}", ppm_parsing(&ppm)); 
+/// // should print [1.0,0.54901960784,0.03921568627]
+/// ```
+fn ppm_parsing(ppm: &Ppm) -> Vec<f32> {
+    let mut perc: Vec<f32> = Vec::new();
+    let contents = ppm.contents.to_vec();
+
+    let mut index = 0;
     
-    // println!("{:?}", ppm.contents);
-    let mut f = File::create("./foo.ppm").expect("unable to create file");
-    f.write_all(&ppm.contents).expect("unable to write data");
+    'parsing: loop {
+        match contents.get(i) {
+            Some(num) => todo!(),
+            _ => break 'parsing
+        }
+        index += 1;
+    }
+
+    perc
+}
+
+fn main() {
+
+    for i in 0..3 {
+        let name: String = format!("./test{}.ppm", i);
+        
+        let mut ppm = Ppm::new(WIDTH, HEIGHT, MAXVAL);
+        gen_rand_circle(&mut ppm);
+
+        let mut f = File::create(name).expect("unable to create file");
+        f.write_all(&ppm.contents).expect("unable to write data");
+    }
+    
 }
