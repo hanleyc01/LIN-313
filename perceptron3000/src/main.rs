@@ -31,7 +31,15 @@ use rand::prelude::*;
 /// ```
 struct Node {
     weights: Vec<u8>,
-    bias: u8,
+    bias: f32,
+}
+
+impl Node {
+    
+    fn new(width: u32, height: u32, bias: f32) -> Self {
+        
+    }
+
 }
 
 /// The file format our simple neural network will work with.
@@ -97,11 +105,11 @@ impl Ppm {
         let contents: Vec<Vec<u8>> = vec![
             vec![MAGIC],
             vec![NUMBER],
-            vec![b' '],
+            vec![b'\n'],
             to_ascii(width),
             vec![b' '],
             to_ascii(height),
-            vec![b' '],
+            vec![b'\n'],
             to_ascii(maxval),
             vec![b'\n'],
         ];
@@ -109,7 +117,7 @@ impl Ppm {
             height,
             width,
             maxval,
-            contents: contents.into_iter().flatten().collect(),
+            contents: contents.into_iter().flatten().collect::<Vec<u8>>(),
         }
     }
 
@@ -153,33 +161,37 @@ fn to_ascii(n: u32) -> Vec<u8> {
     }
 }
 
+const WIDTH: u32 = 1000;
+const HEIGHT: u32 = 1000;
+const MAXVAL: u32 = 255;
+
 fn main() {
-    let width = 100;
-    let height = 100;
-    let maxval = 255;
-    let mut ppm = Ppm::new(width, height, maxval);
+    let mut ppm = Ppm::new(WIDTH, HEIGHT, MAXVAL);
 
-    let radius = 20;
-    let cent_x = width / 2;
-    let cent_y = height / 2;
+    let radius = 100;
+    let cent_x = WIDTH / 2;
+    let cent_y = HEIGHT / 2;
 
-    for i in 0..width {
-        for j in 0..height {
+    for i in 0..WIDTH {
+        for j in 0..HEIGHT {
             let circ_eq = (i as f32 - cent_x as f32).powf(2.) + (j as f32 - cent_y as f32).powf(2.);
             let circ_eq_max = (radius as f32).powf(2.0) + 30.;
             let circ_eq_min = (radius as f32).powf(2.0) - 30.;
-            if circ_eq_min <= circ_eq && circ_eq >= circ_eq_max  {
+            if circ_eq_min >= circ_eq && circ_eq <= circ_eq_max  {
                 if rand::random() {
+                    ppm.push_all(240, 0, 0);
+                } else {
                     ppm.push_all(255, 0, 0);
                 }
             } else if rand::random() {
-                ppm.push_all(0, 0, 150);
+                ppm.push_all(0, 100, 230);
             } else {
-                ppm.push_all(0, 0, 130);
+                ppm.push_all(0, 0, 255);
             }
         }
     }
-
+    
+    // println!("{:?}", ppm.contents);
     let mut f = File::create("./foo.ppm").expect("unable to create file");
     f.write_all(&ppm.contents).expect("unable to write data");
 }
