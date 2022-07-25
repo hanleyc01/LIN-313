@@ -11,7 +11,7 @@ struct Node {
     votes: f32,
 }
 
-const BASE_RANK: f32 = 0.25;
+const BASE_RANK: f32 = 1f32 / 7f32;
 
 impl Node {
     /// Initialize node with provided rank
@@ -37,7 +37,7 @@ fn main() -> std::io::Result<()> {
         .append(true)
         .write(true)
         .create(true)
-        .open("./results2.txt")?;
+        .open("./results2_fixed.txt")?;
 
     // Initializes the nodes
     let mut a = Node::new(BASE_RANK, 1.0); // a -> b
@@ -92,11 +92,17 @@ fn main() -> std::io::Result<()> {
     
         // Push to result vector
         results.push(a.rank.to_string());
+        results.push(" ".to_string());
         results.push(b.rank.to_string());
+        results.push(" ".to_string());
         results.push(c.rank.to_string());
+        results.push(" ".to_string());
         results.push(d.rank.to_string());
+        results.push(" ".to_string());
         results.push(e.rank.to_string());
+        results.push(" ".to_string());
         results.push(f.rank.to_string());
+        results.push(" ".to_string());
         results.push(g.rank.to_string());
         results.push("\n".to_string());
     }

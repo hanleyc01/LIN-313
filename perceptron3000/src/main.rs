@@ -2,6 +2,7 @@
 #![allow(unused_macros)]
 use std::fs::File;
 use std::io::Write;
+use rand::prelude::*;
 
 /// The distinct unit within our neural network; has three important elements:
 ///
@@ -66,11 +67,11 @@ struct Node {
 /// ```
 struct Ppm {
     /// Height of the raster
-    height: u8,
+    height: u32,
     /// Width of the raster
-    width: u8,
+    width: u32,
     /// Maximum value contained in each cell
-    maxval: u8,
+    maxval: u32,
     /// Vector containing the contents of the PPM as bytes
     contents: Vec<u8>,
 }
@@ -90,15 +91,25 @@ impl Ppm {
     /// println!("{:?}", ppm.contents);
     /// // prints -> [80, 51, 10, 4, 10, 4, 10, 15, 10]
     /// ```
-    fn new(width: u8, height: u8, maxval: u8) -> Self {
-        let contents: Vec<u8> = vec![
-            MAGIC, NUMBER, b'\n', width, b'\n', height, b'\n', maxval, b'\n',
+    /// Note that by specifying a `maxval > 255`, we're saying that the maximum value of each
+    /// raster is greater than one byte.
+    fn new(width: u32, height: u32, maxval: u32) -> Self {
+        let contents: Vec<Vec<u8>> = vec![
+            vec![MAGIC],
+            vec![NUMBER],
+            vec![b' '],
+            to_ascii(width),
+            vec![b' '],
+            to_ascii(height),
+            vec![b' '],
+            to_ascii(maxval),
+            vec![b'\n'],
         ];
         Self {
             height,
             width,
             maxval,
-            contents,
+            contents: contents.into_iter().flatten().collect(),
         }
     }
 
@@ -118,24 +129,24 @@ impl Ppm {
     }
 
     /// Push a pixel onto the vector; takes u8 and converts it into the ASCII encoding
-    /// for the number.
-    fn push_all(&mut self, r: u8, g: u8, b: u8) {
+    /// for the number. If `maxval > 255` is true, then this does not push a pixel onto the vector
+    fn push_all(&mut self, r: u32, g: u32, b: u32) {
         let xs: Vec<Vec<u8>> = vec![
             to_ascii(r),
             vec![b' '],
             to_ascii(g),
             vec![b' '],
             to_ascii(b),
-            vec![b'\n']
+            vec![b'\n'],
         ];
         xs.into_iter().flatten().for_each(|x| self.push(x));
     }
 }
 
 /// Simple conversion to of numbers ASCII
-fn to_ascii(n: u8) -> Vec<u8> {
-    if n > 10 {
-        vec![n + 48]
+fn to_ascii(n: u32) -> Vec<u8> {
+    if n < 10 {
+        vec![(n + 48).try_into().unwrap()]
     } else {
         let z = n.to_string().chars().map(|x| x as u8).collect::<Vec<u8>>();
         z
@@ -143,7 +154,32 @@ fn to_ascii(n: u8) -> Vec<u8> {
 }
 
 fn main() {
-    let numsL 
-    // let mut f = File::create("./foo.ppm").expect("unable to create file");
-    // f.write_all(&ppm.contents).expect("unable to write data");
+    let width = 100;
+    let height = 100;
+    let maxval = 255;
+    let mut ppm = Ppm::new(width, height, maxval);
+
+    let radius = 20;
+    let cent_x = width / 2;
+    let cent_y = height / 2;
+
+    for i in 0..width {
+        for j in 0..height {
+            let circ_eq = (i as f32 - cent_x as f32).powf(2.) + (j as f32 - cent_y as f32).powf(2.);
+            let circ_eq_max = (radius as f32).powf(2.0) + 30.;
+            let circ_eq_min = (radius as f32).powf(2.0) - 30.;
+            if circ_eq_min <= circ_eq && circ_eq >= circ_eq_max  {
+                if rand::random() {
+                    ppm.push_all(255, 0, 0);
+                }
+            } else if rand::random() {
+                ppm.push_all(0, 0, 150);
+            } else {
+                ppm.push_all(0, 0, 130);
+            }
+        }
+    }
+
+    let mut f = File::create("./foo.ppm").expect("unable to create file");
+    f.write_all(&ppm.contents).expect("unable to write data");
 }
