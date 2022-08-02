@@ -7,8 +7,12 @@
         "id": "c4f44475462e176b",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "Linguistic Modelling/Language Models.md",
+            "mode": "source",
+            "source": false
+          }
         }
       }
     ],
@@ -57,7 +61,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "818a63ccabe79bb6",
@@ -73,6 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Linguistic Modelling/Language Models.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +95,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Linguistic Modelling/Language Models.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -110,7 +117,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Linguistic Modelling/Language Models.md"
+              }
             }
           }
         ]
@@ -121,5 +130,15 @@
     "collapsed": true
   },
   "active": "c4f44475462e176b",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "assignment-2pdf.pdf",
+    "Bayesian Reasoning.md",
+    "circle1.png",
+    "circle4.png",
+    "circle2.png",
+    "circle3.png",
+    "Linguistic Modelling/Language Models.md",
+    "README.md",
+    "2022-08-01.md"
+  ]
 }
