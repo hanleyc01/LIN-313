@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Linguistic Modelling/Language Models.md",
+            "file": "Linguistic Modelling/2022-08-02.md",
             "mode": "source",
             "source": false
           }
@@ -78,7 +78,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Linguistic Modelling/Language Models.md",
+                "file": "Linguistic Modelling/2022-08-02.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -95,7 +95,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Linguistic Modelling/Language Models.md",
+                "file": "Linguistic Modelling/2022-08-02.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +118,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linguistic Modelling/Language Models.md"
+                "file": "Linguistic Modelling/2022-08-02.md"
               }
             }
           }
@@ -131,13 +131,13 @@
   },
   "active": "c4f44475462e176b",
   "lastOpenFiles": [
+    "Linguistic Modelling/Language Models.md",
     "assignment-2pdf.pdf",
     "Bayesian Reasoning.md",
     "circle1.png",
     "circle4.png",
     "circle2.png",
     "circle3.png",
-    "Linguistic Modelling/Language Models.md",
     "README.md",
     "2022-08-01.md"
   ]
