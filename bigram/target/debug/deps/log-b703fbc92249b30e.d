@@ -1,0 +1,9 @@
+/home/connor/Projects/LIN-313/bigram/target/debug/deps/log-b703fbc92249b30e.rmeta: /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/lib.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/macros.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/serde.rs
+
+/home/connor/Projects/LIN-313/bigram/target/debug/deps/liblog-b703fbc92249b30e.rlib: /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/lib.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/macros.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/serde.rs
+
+/home/connor/Projects/LIN-313/bigram/target/debug/deps/log-b703fbc92249b30e.d: /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/lib.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/macros.rs /home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/serde.rs
+
+/home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/lib.rs:
+/home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/macros.rs:
+/home/connor/.cargo/registry/src/github.com-1ecc6299db9ec823/log-0.4.17/src/serde.rs:
