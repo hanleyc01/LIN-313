@@ -139,7 +139,7 @@ fn replaces(word: &String, splits: &Splits) -> Replaces {
     replaces
 }
 
-// All possible word inserts
+/// All possible word inserts
 fn inserts(word: &String, splits: &Splits) -> Inserts {
     let mut inserts = Vec::new();
     for (head, tail) in splits {
@@ -156,12 +156,18 @@ fn inserts(word: &String, splits: &Splits) -> Inserts {
     inserts
 }
 
+/// Get all possible 1 character edits
 fn edits1(word: String) -> Vec<String> {
     let splits = splits(&word);
     let mut deletes = deletes(&word, &splits);
     let mut transposes = transposes(&word, &splits);
     let mut replaces = replaces(&word, &splits);
     let mut inserts = inserts(&word, &splits);
+    
+    // For inspection purposes
+    println!("One deletion: {:?}", &deletes);
+    // println!("One substitution: {:?}", &replaces);
+    // println!("One insertion: {:?}", &inserts);
 
     deletes.append(&mut transposes);
     deletes.append(&mut replaces);
@@ -257,7 +263,7 @@ fn main() -> Result<(), io::Error> {
             words.insert(word.to_lowercase());
         });
 
-    println!("{}",correction(&"perodically".to_string(), &words));
+    println!("{}",correction(&"beeds".to_string(), &words));
         
     Ok(())
 }
