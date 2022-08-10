@@ -11,3 +11,11 @@
 ![plot](./circle2.png)
 ![plot](./circle3.png)
 ![plot](./circle4.png)
+
+# Spellchecker
+
+- Spell checker that is just a translation of Peter Norvig's 21 line Python spell-checker into Rust, I haven't done the full testing on it to compare against Python, but I think it works pretty well
+
+# Bigram
+
+- My attempt at making a language model, very naive and simple. It simply takes the bigrams of sentences, calculates their probabilities, and then generates text based of Markov chains.
