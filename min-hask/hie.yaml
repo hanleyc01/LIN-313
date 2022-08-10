@@ -1,0 +1,13 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "min-hask:lib"
+
+    - path: "./app/Main.hs"
+      component: "min-hask:exe:min-hask-exe"
+
+    - path: "./app/Paths_min_hask.hs"
+      component: "min-hask:exe:min-hask-exe"
+
+    - path: "./test"
+      component: "min-hask:test:min-hask-test"
