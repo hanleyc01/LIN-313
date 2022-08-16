@@ -31,14 +31,19 @@ impl Spell {
             .split_whitespace()
             .filter(|word| regex.is_match(word))
             .for_each(|word| {
-            words.insert(word.to_lowercase());
-        });
+                words.insert(word.to_lowercase());
+            });
 
         Ok(Self { words })
     }
-    
+
     pub fn check_word(&self, word: String) -> String {
         correction(&word, &self.words)
+    }
+
+    pub fn get_probability(&self, word: String) -> f32 {
+        let bag_len = self.words.len();
+        probability(&self.words, bag_len, &word)
     }
 }
 
@@ -74,7 +79,6 @@ fn splits(word: &String) -> Splits {
     splits
 }
 
-
 /// Get all possible 1 character deletions
 fn deletes(word: &String, splits: &Splits) -> Deletes {
     let mut deletes: Deletes = Vec::new();
@@ -93,14 +97,14 @@ fn deletes(word: &String, splits: &Splits) -> Deletes {
                 let mut delete = String::new();
                 car.iter().for_each(|c| delete.push(*c as char));
                 deletes.push(delete);
-            },
+            }
             Some(bytes) => {
                 let mut delete = String::new();
                 let cdr2 = &bytes[1..];
                 car.iter().for_each(|c| delete.push(*c as char));
                 cdr2.iter().for_each(|c| delete.push(*c as char));
                 deletes.push(delete);
-            },
+            }
         }
     }
     deletes
@@ -121,7 +125,7 @@ fn transposes(word: &String, splits: &Splits) -> Transposes {
                 let mut transpose = String::new();
                 car.iter().for_each(|c| transpose.push(*c as char));
                 transposes.push(transpose);
-            },
+            }
             Some(bytes) => {
                 let mut transpose = String::new();
                 let cdr0 = vec![&bytes[0]];
@@ -133,7 +137,7 @@ fn transposes(word: &String, splits: &Splits) -> Transposes {
                 cdr0.iter().for_each(|c| transpose.push(**c as char));
                 cdr2.iter().for_each(|c| transpose.push(*c as char));
                 transposes.push(transpose);
-            },
+            }
         }
     }
     transposes
@@ -154,7 +158,7 @@ fn replaces(word: &String, splits: &Splits) -> Replaces {
                 let mut replace = String::new();
                 car.iter().for_each(|c| replace.push(*c as char));
                 replaces.push(replace);
-            },
+            }
             Some(bytes) => {
                 let cdr2 = &bytes[1..];
                 for l in LETTERS.chars() {
@@ -164,7 +168,7 @@ fn replaces(word: &String, splits: &Splits) -> Replaces {
                     cdr2.iter().for_each(|c| replace.push(*c as char));
                     replaces.push(replace);
                 }
-            },
+            }
         }
     }
 
@@ -195,7 +199,7 @@ fn edits1(word: String) -> Vec<String> {
     let mut transposes = transposes(&word, &splits);
     let mut replaces = replaces(&word, &splits);
     let mut inserts = inserts(&word, &splits);
-    
+
     // For inspection purposes
     // println!("One deletion: {:?}", &deletes);
     // println!("One substitution: {:?}", &replaces);
@@ -211,9 +215,9 @@ fn edits1(word: String) -> Vec<String> {
 fn edits2(word: &String) -> Vec<String> {
     let mut edits = Vec::new();
     for e1 in edits1(word.to_string()) {
-       for e2 in edits1(e1) {
-           edits.push(e2);
-       }
+        for e2 in edits1(e1) {
+            edits.push(e2);
+        }
     }
     edits
 }
@@ -231,12 +235,11 @@ fn known(words: Vec<String>, bag: &HashBag<String>) -> Vec<String> {
 
 /// Return a non-empty vector of possible words that are some edit distance away;
 ///
-/// 1. The original word, if it is known, otherwise 
+/// 1. The original word, if it is known, otherwise
 /// 2. The vector of known words one edit distance away, otherwise
 /// 3. The vector of known words two edit distance away, otherwise
 /// 4. The original word, even though it is not known
 fn candidates(word: &String, words: &HashBag<String>) -> Vec<String> {
-    
     let known_word = known(vec![word.to_string()], words);
     let known_edits1 = known(edits1(word.to_string()), words);
     let known_edits2 = known(edits2(word), words);
@@ -251,13 +254,15 @@ fn candidates(word: &String, words: &HashBag<String>) -> Vec<String> {
     } else {
         word_singleton
     }
-    
 }
 
 fn correction(word: &String, words: &HashBag<String>) -> String {
     let possibilities = candidates(word, words);
-    let argmax_list: Vec<f32> = possibilities.iter().map(|w| probability(words, words.len(), w)).collect();
-    
+    let argmax_list: Vec<f32> = possibilities
+        .iter()
+        .map(|w| probability(words, words.len(), w))
+        .collect();
+
     let mut max = 0.0;
     let mut max_index = 0;
     for i in 0..argmax_list.len() {
