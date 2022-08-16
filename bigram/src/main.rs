@@ -98,7 +98,7 @@ fn gen_word(bigram_probability: &Pair) -> String {
 
 fn main() -> Result<(), Error> {
     // Open file
-    let mut f = File::open(BIG_FILE)?;
+    let mut f = File::open("k_h.txt")?;
 
     // Read file to `raw`
     let mut raw = String::new();
@@ -119,7 +119,7 @@ fn main() -> Result<(), Error> {
 
     let pairs = pairs(&sentences);
 
-    for _ in 0..10 {
+    for _ in 0..100 {
         println!("{:?}", gen_word(&pairs));
     }
     Ok(())

@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["aho_corasick","bigram","hashbag","memchr","regex","regex_syntax"];
+window.ALL_CRATES = ["aho_corasick","bigram","cfg_if","getrandom","hashbag","libc","memchr","ppv_lite86","rand","rand_chacha","rand_core","regex","regex_syntax"];
