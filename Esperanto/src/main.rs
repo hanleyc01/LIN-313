@@ -1,14 +1,21 @@
 #![allow(non_snake_case, dead_code, unused)]
 
+mod spell;
+
+use crate::spell::*;
+
 use std::{fs::File, io::{Error, Read}};
 
 /// CSV data set, entries delimited by `:` (as `,`'s are present in data)
 const DATA: &str = "csv-data.csv";
+const CORPUS: &str = "esp-corpus.txt";
 
 fn main() -> Result<(), Error> {
     // open file
     let mut f = File::open(DATA)?;
-    
+    let s = Spell::new(CORPUS.to_string())?;
+
+    println!("{:?}", s.check_word("cxiu".to_string()));
     // read to string buffer
     let mut raw_data = String::new();
     f.read_to_string(&mut raw_data);
