@@ -41,7 +41,7 @@ impl Spell {
         correction(&word, &self.words)
     }
 
-    pub fn get_probability(&self, word: String) -> f32 {
+    pub fn get_probability(&self, word: String) -> f64 {
         let bag_len = self.words.len();
         probability(&self.words, bag_len, &word)
     }
@@ -258,7 +258,7 @@ fn candidates(word: &String, words: &HashBag<String>) -> Vec<String> {
 
 fn correction(word: &String, words: &HashBag<String>) -> String {
     let possibilities = candidates(word, words);
-    let argmax_list: Vec<f32> = possibilities
+    let argmax_list: Vec<f64> = possibilities
         .iter()
         .map(|w| probability(words, words.len(), w))
         .collect();
@@ -277,6 +277,6 @@ fn correction(word: &String, words: &HashBag<String>) -> String {
 
 /// Returns the probability of some thing within the HashBag; i.e., the ratio of the count of some
 /// object over the total count
-fn probability<T: Hash + Eq>(bag: &HashBag<T>, bag_len: usize, thing: &T) -> f32 {
-    bag.contains(thing) as f32 / bag_len as f32
+fn probability<T: Hash + Eq>(bag: &HashBag<T>, bag_len: usize, thing: &T) -> f64 {
+    bag.contains(thing) as f64 / bag_len as f64
 }

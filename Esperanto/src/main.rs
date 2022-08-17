@@ -22,7 +22,7 @@ fn main() -> Result<(), Error> {
     // overkill given the dataset. So instead, I'm just going to print out the relevant information
 
     // correctly identified words
-    let words = vec![
+    let words1 = vec![
         "bakulo",
         "gajo",
         "hakili",
@@ -33,7 +33,10 @@ fn main() -> Result<(), Error> {
         "laboristo",
     ];
 
-    words.iter().for_each(|w| {
+    let words2 = "fabelado";
+
+    println!("prompted words");
+    words1.iter().for_each(|w| {
         println!(
             "word: {}, correction: {:?}, probability: {}",
             w,
@@ -41,6 +44,14 @@ fn main() -> Result<(), Error> {
             s.get_probability(w.to_string())
         );
     });
+
+    println!("unprompted words");
+    println!(
+        "word: {}, correction: {:?}, probability: {}",
+        words2,
+        s.check_word(words2.to_string()),
+        s.get_probability(words2.to_string())
+    );
 
     // read to string buffer
     // let mut raw_data = String::new();
