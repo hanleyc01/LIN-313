@@ -4,6 +4,7 @@
 use hashbag::HashBag;
 use regex::Regex;
 
+use std::time::{Duration,Instant};
 use std::fs::File;
 use std::hash::Hash;
 use std::io::{self, Read};
@@ -71,6 +72,7 @@ fn deletes(word: &String, splits: &Splits) -> Deletes {
             },
         }
     }
+
     deletes
 }
 
@@ -165,7 +167,7 @@ fn edits1(word: String) -> Vec<String> {
     let mut inserts = inserts(&word, &splits);
     
     // For inspection purposes
-    println!("One deletion: {:?}", &deletes);
+    // println!("One deletion: {:?}", &deletes);
     // println!("One substitution: {:?}", &replaces);
     // println!("One insertion: {:?}", &inserts);
 
@@ -263,7 +265,11 @@ fn main() -> Result<(), io::Error> {
             words.insert(word.to_lowercase());
         });
 
-    println!("{}",correction(&"beeds".to_string(), &words));
+    let start = Instant::now();
+    let correction = correction(&"purty".to_string(), &words);
+    let duration = start.elapsed();
+    println!("Time elapsed in computation is: {:?}", duration);
+    println!("{}",correction);
         
     Ok(())
 }
